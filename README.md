@@ -92,3 +92,48 @@ chmod 744 ./bin/install_terrform_cli changes the permission to allow the user to
 - `git pull -p` (deletes origin/branch name branch)
 - `git branch -d <branchname>` (deletes local branch)
 - 
+
+### Working with EN Vars
+#### Env Command
+We can list out all environment variables using `env`
+
+We can filter specific env vars using grep eg `env | grep AWS_`
+
+#### Setting and Unsetting Env Vars
+
+In the terminal we can set using `export HELLO="world"`
+
+We can unset using `unset HELLO`
+
+We can sent an env var temporarily when just running a command
+```
+HELLO='world' ./bin/print_message
+```
+
+Within a bash script we can set an env var without writing export eg:
+```sh
+#!/usr/bin/env bash
+HELLO='world'
+
+echo $HELLO
+```
+
+#### Printing Env Vars
+
+We can print env vars with echo eg `echo $HELLO`
+
+#### Scoping Env Vars
+
+When you open up new bash terminals in VSCode it will not be aware of env vars that you have set in another window.
+
+If you want Env Vars to persist across all future bash terminals that are open you need to set Env Vars in your bash profile. eg. `.bash_profile`
+
+#### Persisting Env Vars in GitPod
+
+We cna persist env vars in gitpod by storing them in GitPod secrets storage.
+```
+gp env HELLO='world'
+```
+All future workspaces launched will se the env vars for all bash terminals opened in all workspaces.
+
+You can also set env vars in the `.gitpod.yml` but this can only contain non sensitive variables.
