@@ -201,6 +201,8 @@ You can access the terraform registry at [https://registry.terraform.io/](https:
 
 `terrform apply --auto-complete` - Applies the changes without requiring a "yes" user input.
 
+`terraform destroy` - This will destroy resources.
+
 ### Terraform Lock Files
 
 `.terraform.lock.hcl` contains the locked versining for the providers ofr modules that should be used with this project. 
