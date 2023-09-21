@@ -137,3 +137,44 @@ gp env HELLO='world'
 All future workspaces launched will se the env vars for all bash terminals opened in all workspaces.
 
 You can also set env vars in the `.gitpod.yml` but this can only contain non sensitive variables.
+
+
+## AWS CLI
+
+```sh
+aws sts get-caller-identity
+```
+can be used to check if our AWS credentials are configured correctly.
+
+We need to set env vars with region, access key and secret access key. This can be retrieved from IAM in AWS console.
+
+[AWS CLI Env Vars](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
+
+We need to set GitPod env vars using 
+```sh
+gp env AWS_ACCESS_KEY_ID='ABCDEFGHIJKLMNOPQRST'
+gp env AWS_SECRET_ACCESS_KEY='ABCDEFGHIJKLMNOSECRET'
+gp env AWS_DEFAULT_REGION=eu-west-2
+```
+
+When we then run 
+```sh
+aws sts get-caller-identity
+```
+
+It will return json like this:
+```json
+{
+    "UserId": "AIDAYYGHIKGGZHNNC4CU3",
+    "Account": "123456789012",
+    "Arn": "arn:aws:iam::123456789012:user/terraform_bootcamp"
+}
+```
+
+### Update to install_aws_cli
+
+If AWS CLI is already installed when the workspace is started (eg in a restart) then it tries to install and fails. I have updated the [install_aws_cli](./bin/install_aws_cli) file to include two lines to remove the AWS CLI to prevent this:
+```sh
+rm -f '/workspace/awscliv2.zip'
+rm -rf '/workspace/aws'
+```
