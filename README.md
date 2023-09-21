@@ -91,7 +91,17 @@ chmod 744 ./bin/install_terrform_cli changes the permission to allow the user to
 - ***`checkout main`***
 - `git pull -p` (deletes origin/branch name branch)
 - `git branch -d <branchname>` (deletes local branch)
-- 
+
+### If you forget to create a ticket and are working on main..
+
+- Create ticket retrospectively
+- Create branch from ticket (in GitHub)
+- `git pull`
+- `git add <files>`
+- `git stash save`
+- `git checkout <issue branch name>`
+- `git stash apply`
+- `git commit -m <message>` and continue as above
 
 ### Working with EN Vars
 #### Env Command
