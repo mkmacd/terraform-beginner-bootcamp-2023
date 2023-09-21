@@ -178,3 +178,45 @@ If AWS CLI is already installed when the workspace is started (eg in a restart) 
 rm -f '/workspace/awscliv2.zip'
 rm -rf '/workspace/aws'
 ```
+
+
+# Terraform
+
+### Terraform Registry
+
+You can access the terraform registry at [https://registry.terraform.io/](https://registry.terraform.io/)
+
+### Basic Actions
+
+- ***Providers*** is an interface to APIs that will allow you to create resources in terraform.
+- ***Modules*** are a way to refactor or make large amounts of terraform code modular, portable and shareable.
+
+[Random Terraform Provider](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string)
+
+`terraform init` - This downloads the binaries for the terraform providers that we will use.
+
+`terraform plan` - Shows the changes that will be made when terraform is applied. We can output this changeset (plan) to be passed to an apply, but often you can just ignore outputting.
+
+`terraform apply` - Applies the changeset. Needs input of "yes".
+
+`terrform apply --auto-complete` - Applies the changes without requiring a "yes" user input.
+
+### Terraform Lock Files
+
+`.terraform.lock.hcl` contains the locked versining for the providers ofr modules that should be used with this project. 
+
+The terraform lockfile should be ***committed*** to your version control system (eg GitHub)
+
+### Terraform State File
+
+`.terraform.tfstate` contains information about the current stat of your infrastructutre. This ***should not*** committed to you version controlled system.
+
+If you lose this file, you lose knowing the state of your infrastructure.
+
+`.terraform/tfstate.backup` is the previous state file state.
+
+### Terraform Directory
+
+`.terraform` directory contains binaries of terraform providers.
+
+
