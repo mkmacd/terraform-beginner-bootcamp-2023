@@ -260,3 +260,25 @@ Provide the following code (replace your token in the file):
   }
 }
 ```
+
+### Issue with using `tf plan` and Terraform Cloud
+
+Whilst I had set the env vars within GitPod with `AWS_SECRET_ACCESS_KEY` and `AWS_ACCESS_KEY_ID` and `AWS_DEFAULT_REGION` when using Terraform Cloud these variables have to be set in the GUI of TF Cloud as well otherwise you get the error:
+
+```
+Error: No valid credential sources found
+│ 
+│   with provider["registry.terraform.io/hashicorp/aws"],
+│   on main.tf line 21, in provider "aws":
+│   21: provider "aws" {
+│ 
+│ Please see https://registry.terraform.io/providers/hashicorp/aws
+│ for more information about providing credentials.
+│ 
+│ Error: failed to refresh cached credentials, no EC2 IMDS role found,
+│ operation error ec2imds: GetMetadata, request canceled, context deadline
+│ exceeded
+│ ```
+
+Some info can be found at [https://developer.hashicorp.com/terraform/cloud-docs/workspaces/variables/managing-variables#security](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/variables/managing-variables#security)
+
