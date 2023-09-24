@@ -1,5 +1,12 @@
 # Terraform Beginner Bootcamp 2023
 
+## Table Of Contents
+
+- [Semantic Versioning](#semantic-versioning)
+- [Git Commands That Might Be Useful](#gitcommandsthatmightbeuseful)
+
+
+
 ## Semantic Versioning :mage:
 
 This project is going to use semantic versioning for its tagging.
