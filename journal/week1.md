@@ -53,3 +53,17 @@ This brings up an editor that allows you to move around commits and put them in 
                       to this position in the new commits. The <ref> is
                       updated at the end of the rebase
 
+## Root Module Structure
+
+[Standard Module Structure](https://developer.hashicorp.com/terraform/language/modules/develop/structure)
+
+Our root module structure is as follows.
+```
+PROJECT ROOT
+  |-- main.tf (everything else)
+  |-- variables.tf         (stores the structure of input variables)        
+  |-- providers.tf         (defined required providers and their configuration)
+  |-- outputs.tf           (stores our outputs)
+  |-- terraform.tfvars     (the data of variables we want to load into our TF project)
+  |-- README.md            (required for moot modules)
+```
