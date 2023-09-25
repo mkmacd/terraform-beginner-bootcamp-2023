@@ -1,5 +1,3 @@
 #! /usr/bin/env bash
 
-git config --global core.editor "gitpod-code --wait"
-
-unset $GIT_EDITOR
+unset GIT_EDITOR
