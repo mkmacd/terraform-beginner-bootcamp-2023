@@ -4,12 +4,14 @@ tasks:
       source ./bin/install_terraform_cli
       source ./bin/generate_tfrc_credentials
       source ./bin/set_tf_alias
+      source ./bin/unset_git_editor_var
   - name: aws-cli
     env:
       AWS_CLI_AUTO_PROMPT: on-partial
     before: |
       source ./bin/install_aws_cli
       source ./bin/set_tf_alias
+      source ./bin/unset_git_editor_var
 vscode:
   extensions:
     - amazonwebservices.aws-toolkit-vscode
