@@ -15,5 +15,18 @@ This has been fixed by running
 ### Rebasing Commits
 
 Run `git rebase -i main`
-This brings up an editor that allows 
+This brings up an editor that allows you to move around commits and put them in a different order (assuming no merge conflicts will arise)
+
+First  env var git_editor
+Then .git/config in your repository
+Then ~/.gitconfig
+Then /etc/gitconfig
+Then VIM (if using git bash)
+
+
+
+
+#### Key Git Merge Commands
+
+- 
 
