@@ -53,3 +53,50 @@ This brings up an editor that allows you to move around commits and put them in 
                       to this position in the new commits. The <ref> is
                       updated at the end of the rebase
 
+## Root Module Structure
+
+[Standard Module Structure](https://developer.hashicorp.com/terraform/language/modules/develop/structure)
+
+Our root module structure is as follows.
+```
+PROJECT ROOT
+  |-- main.tf (everything else)
+  |-- variables.tf         (stores the structure of input variables)        
+  |-- providers.tf         (defined required providers and their configuration)
+  |-- outputs.tf           (stores our outputs)
+  |-- terraform.tfvars     (the data of variables we want to load into our TF project)
+  |-- README.md            (required for moot modules)
+```
+
+## Terraform and Input Variables
+
+### Terraform Cloud Variables
+
+In terraform we can set two types of variables
+- Environment Variables - Those that younwould set in your bash terminal, eg AWS credentials
+- Terraform Variables - Those that you would normally set in your rfvars file
+
+We can set TF Cloud variables to be sensitive so they're not shown visibly in the UI.
+
+### Loading TF variables
+
+#### Var Flag
+We can use the `-var` flag to se the input variable or override a variable in the tfvars file eg. `terraform -var user_uuid="my-user-id"`
+
+#### var-file flag
+- TODO: Research this flag
+
+#### terraform.tfvars
+
+This is the default file to load in TF variable in bulk.
+
+
+#### auto.tfvars
+- TODO: document this functionality for TF cloud
+
+#### Order of TF variables
+
+- TODO: Document which TF variable settings take precedence
+
+[Variables Documentation](https://developer.hashicorp.com/terraform/language/values/variables)
+
