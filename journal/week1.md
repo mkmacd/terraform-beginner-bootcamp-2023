@@ -110,6 +110,7 @@ If we lose our statefile we most likely have to tear down all our cloud infrastr
 
 You can use terraform import but it won't work for all cloud resources. You need to check the terraform providers documentation for which resources support import.
 
+
 ### Fix missing resources with Terraform Import
 
 
@@ -122,3 +123,48 @@ You can use terraform import but it won't work for all cloud resources. You need
 ### Fix manual configuration
 
 If someone goes and deletes or modifies cloud resources manually through clickops, if we run `terraform plan` again it will attempt to put our infrastructure back in it's expected state, fixing configuration drift.
+
+### Fix using terraform refresh
+```sh
+terraform apply -refresh-only -auto-approve
+```
+## Fix using Terraform Refresh
+
+[Terraform Refresh](https://developer.hashicorp.com/terraform/cli/commands/refresh)
+```sh
+terraform apply -refresh-only -auto-approve
+```
+
+## Terraform Modules
+
+### Module Sources
+Using the source, we can import the module from various places:
+- locally (shown)
+- github 
+- terraform registry
+
+```tf
+module "terrahouse_aws"{
+  source = "./modules/terrahouse_aws"
+}
+```
+
+[Module Sources](https://developer.hashicorp.com/terraform/language/modules/sources)
+
+### Passing input variables
+
+We can pass input variables to our module. The module has to declare these tf variables in its ***own*** `variables.tf`
+```tf
+module "terrahouse_aws"{
+  source = "./modules/terrahouse_aws"
+  user_uuid = var.user_uuid
+  bucket_name = var.bucket_name
+}
+```
+### Terraform Module Structure
+
+It is recommend to place modules in a modules directory when developing modules but it can be named whatever you like.
+
+
+
+
