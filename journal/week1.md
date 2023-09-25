@@ -7,6 +7,12 @@
 
 Occasionally commits need rebasing if mistakes have been made and these need to be squashed. To do this GitPod needs to be able to use VS code as it's editor and it needs an env var to be unset.
 For some reason in my GitPod environment it doesn't seem to allow it.
+The order it looks for a text editor is:
+1. env var git_editor
+2. .git/config in your repository
+3. ~/.gitconfig
+4. /etc/gitconfig
+5. VIM (if using git bash)
 
 This has been fixed by running
 - `git config --global core.editor "gitpod-code --wait"`
@@ -14,19 +20,36 @@ This has been fixed by running
 
 ### Rebasing Commits
 
-Run `git rebase -i main`
-This brings up an editor that allows you to move around commits and put them in a different order (assuming no merge conflicts will arise)
+#### Basic Rebasing
 
-First  env var git_editor
-Then .git/config in your repository
-Then ~/.gitconfig
-Then /etc/gitconfig
-Then VIM (if using git bash)
-
-
+- `git checkout A`
+- `git checkout B`
+![rebasing_git](https://github.com/mkmacd/terraform-beginner-bootcamp-2023/assets/134923802/65cd2faf-a1d5-4116-baa9-5220283ce8df)
 
 
 #### Key Git Merge Commands
 
-- 
+Run `git rebase -i main`
+This brings up an editor that allows you to move around commits and put them in a different order and squash them (assuming no merge conflicts will arise)
+
+- p, pick <commit> = use commit
+- r, reword <commit> = use commit, but edit the commit message
+- e, edit <commit> = use commit, but stop for amending
+- s, squash <commit> = use commit, but meld into previous commit
+- f, fixup [-C | -c] <commit> = like "squash" but keep only the previous
+                   commit's log message, unless -C is used, in which case
+                   keep only this commit's message; -c is same as -C but
+                   opens the editor
+- x, exec <command> = run command (the rest of the line) using shell
+- b, break = stop here (continue rebase later with 'git rebase --continue')
+- d, drop <commit> = remove commit
+- l, label <label> = label current HEAD with a name
+- t, reset <label> = reset HEAD to a label
+- m, merge [-C <commit> | -c <commit>] <label> [# <oneline>]
+        create a merge commit using the original merge commit's
+        message (or the oneline, if no original merge commit was
+        specified); use -c <commit> to reword the commit message
+- u, update-ref <ref> = track a placeholder for the <ref> to be updated
+                      to this position in the new commits. The <ref> is
+                      updated at the end of the rebase
 
