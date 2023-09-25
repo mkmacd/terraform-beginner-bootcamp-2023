@@ -104,10 +104,19 @@ This is the default file to load in TF variable in bulk.
 
 ## Dealing with Configuration Drift
 
+### What happens if we lose our state file?
+
+If we lose our statefile we most likely have to tear down all our cloud infrastructure manually.
+
+You can use terraform import but it won't work for all cloud resources. You need to check the terraform providers documentation for which resources support import.
 
 ### Fix missing resources with Terraform Import
 
+
+`terraform import aws_s3_bucket.example`
+
 [Terraform Import](https://developer.hashicorp.com/terraform/cli/import)
+[AWS S3 Bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket#import)
 
 
 ### Fix manual configuration
