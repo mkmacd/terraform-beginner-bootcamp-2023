@@ -6,8 +6,8 @@ resource "random_string" "bucket_name" {
 
 
 
-resource "aws_s3_bucket" "terraform_s3_bucket" {
-  bucket = random_string.bucket_name.result
+resource "aws_s3_bucket" "website_bucket" {
+  bucket = var.bucket_name
 
   tags = {
     UserUID       = var.user_uuid
