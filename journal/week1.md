@@ -100,3 +100,16 @@ This is the default file to load in TF variable in bulk.
 
 [Variables Documentation](https://developer.hashicorp.com/terraform/language/values/variables)
 
+
+
+## Dealing with Configuration Drift
+
+
+### Fix missing resources with Terraform Import
+
+[Terraform Import](https://developer.hashicorp.com/terraform/cli/import)
+
+
+### Fix manual configuration
+
+If someone goes and deletes or modifies cloud resources manually through clickops, if we run `terraform plan` again it will attempt to put our infrastructure back in it's expected state, fixing configuration drift.
