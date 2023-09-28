@@ -250,3 +250,72 @@ We use `jsonencode` to create the json polilcy to create the json policy inline 
 {"hello":"world"}
 ```
 [jsonencode](https://developer.hashicorp.com/terraform/language/functions/jsonencode)
+
+
+### Changing the Lifecycle of resources
+
+Sometimes you don't want everything to deploy when you make individual changes, eg to a website. You might want to do it with content version (almost like major release)
+As we have etags in our `aws_s3_object` resource, this tells terraform any time there's a change with the files in it.
+We can add lifecycle and force it to ignore the changes to the file using:
+```
+lifecycle {
+    ignore_changes = [etag]
+  }
+  ```
+
+  ### Terraform Data
+
+We need to create a "fake" resource that can be referenced:
+```
+resource "terraform_data" "content_version" {
+  input = var.content_version
+  }
+  ```
+
+  The update the lifecycle with:
+
+  ```
+  lifecycle {
+    replace_triggered_by = [var.terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+  ```
+
+  This will look at the changes to the content version and not the changes to the file.
+
+
+[Meta arguments lifecycle](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle) 
+
+In the top level variables file we put
+```
+variable "content_version" {
+  type        = number
+}
+```
+
+Within variables in the terrahouse module we put:
+```
+variable "content_version" {
+  description = "The content version. Should be a positive integer starting at 1."
+  type        = number
+
+  validation {
+    condition     = var.content_version > 0 && floor(var.content_version) == var.content_version
+    error_message = "The content_version must be a positive integer starting at 1."
+  }
+}
+```
+
+In the top level main.tf we update to:
+```
+module "terrahouse_aws" {
+  source = "./modules/terrahouse_aws"
+  user_uuid = var.user_uuid
+  bucket_name = var.bucket_name 
+  error_html_filepath = var.error_html_filepath
+  index_html_filepath = var.index_html_filepath
+  content_version = var.content_version
+}
+```
+
+Then in the top level `terraform.tfvars` file we add `content_version=2` (and this is what we change.)
