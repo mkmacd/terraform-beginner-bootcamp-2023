@@ -359,3 +359,16 @@ resource "aws_instance" "web" {
 }
 
 ```
+
+
+## For Each Expressions
+
+For each allows us to iterate over complex data types. In this situation it allows us to iterate over all of the images in our assets folder and upload them. So even if we add more everything will be uploaded without having to explicitly upload each individually.
+
+For example, if var.list were a list of strings, then the following expression would produce a tuple of strings with all-uppercase letters:
+```sh
+[for s in var.list : upper(s)]
+```
+This is mostly useful when you are creating multiples of a cloud resource and you want to reduce the amount of repetitive terraform code.
+
+[For Each Expressions](https://developer.hashicorp.com/terraform/language/expressions/for)
