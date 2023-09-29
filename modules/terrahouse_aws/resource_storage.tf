@@ -65,10 +65,10 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
         "Condition"= {
           "StringEquals"= {
             "AWS:SourceArn"= "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${aws_cloudfront_distribution.s3_distribution.id}"
-            # "AWS:SourceArn"= aws_cloudfront_distribution.s3_distribution.arn
+            # "AWS:SourceArn"= aws_cloudfront_distribution.s3_distribution.arn 
           }
         }
-      }
+    }
 })
 }
 
