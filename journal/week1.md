@@ -372,3 +372,50 @@ For example, if var.list were a list of strings, then the following expression w
 This is mostly useful when you are creating multiples of a cloud resource and you want to reduce the amount of repetitive terraform code.
 
 [For Each Expressions](https://developer.hashicorp.com/terraform/language/expressions/for)
+
+
+## First Code Trap
+
+After having followed all instructions, when I got to `tf plan` an issue comes up:
+
+```
+ Error: Missing required argument
+│ 
+│   on main.tf line 17, in module "terrahouse_aws":
+│   17: module "terrahouse_aws" {
+│ 
+│ The argument "assets_path" is required, but no definition was found.
+```
+
+Within main.tf there is no line relating to the assets_path.
+I have added this: 
+```
+module "terrahouse_aws" {
+  source = "./modules/terrahouse_aws"
+  user_uuid = var.user_uuid
+  bucket_name = var.bucket_name 
+  error_html_filepath = var.error_html_filepath
+  index_html_filepath = var.index_html_filepath
+  content_version = var.content_version
+  assets_path = var.assets_path
+}
+```
+Having done this, there is still and error:
+
+```
+ Error: Error in function call
+│ 
+│   on modules/terrahouse_aws/resource_storage.tf line 54, in resource "aws_s3_object" "upload_assets":
+│   54:   etag = filemd5("${var.assets_path}${each.key}")
+│     ├────────────────
+│     │ while calling filemd5(path)
+│     │ each.key is "lauterbrunnen_wide_summer.jpg"
+│     │ var.assets_path is "/workspace/terraform-beginner-bootcamp-2023/public/assets"
+│ 
+│ Call to function "filemd5" failed: open /workspace/terraform-beginner-bootcamp-2023/public/assetslauterbrunnen_wide_summer.jpg: no such file or directory.
+```
+
+It appears to lack a `/` after assets. So I then added this to the terraform.tfvars file:
+`assets_path="/workspace/terraform-beginner-bootcamp-2023/public/assets/"`
+
+This solved the problem.
