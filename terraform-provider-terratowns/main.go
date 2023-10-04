@@ -15,17 +15,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
-
 // func main(): Defines the main function, the entry point of the app. 
 // When you run the program, it starts executing from this function.
 func main() {
 	plugin.Serve(&plugin.ServeOpts{
 		ProviderFunc: Provider,
-
 	})
-	// format.printline
+	// Format.PrintLine
 	// Prints to standard output
-	fmt.Println("Hello, World!")
+	fmt.Println("Hello, world!")
 }
 
 type Config struct {
@@ -34,12 +32,12 @@ type Config struct {
 	UserUuid string
 }
 
-// In golang, a titlecase function will get exported.
+// in golang, a titlecase function will get exported.
 func Provider() *schema.Provider {
 	var p *schema.Provider
 	p = &schema.Provider{
 		ResourcesMap:  map[string]*schema.Resource{
-			//"terratowns_home": Resource(),
+			"terratowns_home": Resource(),
 		},
 		DataSourcesMap:  map[string]*schema.Resource{
 

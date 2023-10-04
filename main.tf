@@ -36,3 +36,14 @@ provider "terratowns" {
 #   assets_path = var.assets_path
 # }
 
+resource "terratowns_home" "home" {
+  name = "Why English food doesn't suck!"
+  description = <<DESCRIPTION
+American's for some reason think that English food is bland and tasteless! This home is filled with British Recipes to try and remedy that misconception!
+DESCRIPTION
+  #domain_name = module.terrahouse_aws.cloudfront_url
+  domain_name = "3fdq3gz.cloudfront.net"
+  town = "cooker-cove"
+  content_version = 1
+}
+
