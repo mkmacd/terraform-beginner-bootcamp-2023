@@ -33,7 +33,7 @@
 ## Semantic Versioning :mage:
 
 This project is going to use semantic versioning for its tagging.
-[sember.org](https://semver.org/)
+[semver.org](https://semver.org/)
 
 The general format is **MAJOR.MINOR.PATCH**, eg ```1.2.3```
 
