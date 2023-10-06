@@ -24,6 +24,9 @@ variable "content_version" {
 variable "assets_path" {
   type        = string
 }
+variable "public_path" {
+  type        = string
+}
 variable "terratowns_endpoint" {
   type        = string
 }
