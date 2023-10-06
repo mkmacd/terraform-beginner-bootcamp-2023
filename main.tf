@@ -34,6 +34,7 @@ module "terrahouse_aws" {
   content_version = var.content_version
   assets_path = var.assets_path
   public_path = var.public_path
+  css_path = var.css_path
 }
 
 resource "terratowns_home" "home" {

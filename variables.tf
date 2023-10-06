@@ -27,6 +27,9 @@ variable "assets_path" {
 variable "public_path" {
   type        = string
 }
+variable "css_path" {
+  type        = string
+}
 variable "terratowns_endpoint" {
   type        = string
 }

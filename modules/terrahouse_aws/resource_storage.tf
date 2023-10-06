@@ -33,30 +33,41 @@ resource "aws_s3_object" "index_html" {
   }
 }
 
-# resource "aws_s3_object" "error_html" {
-#   bucket = aws_s3_bucket.website_bucket.bucket
-#   key    = "error.html"
-#   source = var.error_html_filepath
-#   etag = filemd5(var.error_html_filepath)
-#   content_type = "text/html"
-#   lifecycle {
-#     replace_triggered_by = [terraform_data.content_version.output]
-#     ignore_changes = [etag]
-#   }
-# }
-
-resource "aws_s3_object" "upload_assets" {
-  for_each = fileset(var.public_path,"**")
+resource "aws_s3_object" "error_html" {
   bucket = aws_s3_bucket.website_bucket.bucket
-  key    = "${each.key}"
-  source = "${var.public_path}/${each.key}"
-  etag = filemd5("${var.public_path}${each.key}")
+  key    = "error.html"
+  source = var.error_html_filepath
+  etag = filemd5(var.error_html_filepath)
+  content_type = "text/html"
   lifecycle {
     replace_triggered_by = [terraform_data.content_version.output]
     ignore_changes = [etag]
   }
 }
 
+resource "aws_s3_object" "upload_assets" {
+  for_each = fileset(var.assets_path,"*.{jpg,png,gif,jpeg}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "assets/recipes/${each.key}"
+  source = "${var.assets_path}/${each.key}"
+  etag = filemd5("${var.assets_path}${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_css" {
+  for_each = fileset(var.css_path,"*.css")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "css/${each.key}"
+  source = "${var.css_path}/${each.key}"
+  etag = filemd5("${var.css_path}${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
 
 
 
