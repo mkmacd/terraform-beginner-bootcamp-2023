@@ -10,6 +10,7 @@ tasks:
       source ./bin/set_tf_alias
       source ./bin/unset_git_editor_var
       cp $PROJECT_ROOT/terraform.tfvars.example $PROJECT_ROOT/terraform.tfvars
+      source ./bin/build_provider
   - name: sinatra
     before: |
       cd $PROJECT_ROOT
