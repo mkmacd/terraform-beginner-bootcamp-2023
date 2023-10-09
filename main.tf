@@ -33,6 +33,10 @@ module "terrahouse_aws" {
   index_html_filepath = var.index_html_filepath
   content_version = var.content_version
   assets_path = var.assets_path
+  public_path = var.public_path
+  css_path = var.css_path
+  html_filepath = var.html_filepath
+  recipes_path = var.recipes_path
 }
 
 resource "terratowns_home" "home" {
@@ -41,7 +45,7 @@ resource "terratowns_home" "home" {
 Americans, for some reason think that English food is bland and tasteless! This home is filled with British Recipes to try and remedy that misconception!
 DESCRIPTION
   domain_name = module.terrahouse_aws.cloudfront_url
-  town = "missingo"
-  content_version = 1
+  town = "cooker-cove"
+  content_version = 2
 }
 

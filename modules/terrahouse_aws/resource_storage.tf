@@ -20,42 +20,85 @@ resource "aws_s3_bucket_website_configuration" "website_configuration" {
 }
 
 
-#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object
-resource "aws_s3_object" "index_html" {
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object
+# resource "aws_s3_object" "index_html" {
+#   bucket = aws_s3_bucket.website_bucket.bucket
+#   key    = "index.html"
+#   source = var.index_html_filepath
+#   etag = filemd5(var.index_html_filepath)
+#   content_type = "text/html"
+#   lifecycle {
+#     ignore_changes = [etag]
+#     replace_triggered_by = [terraform_data.content_version.output]
+#   }
+# }
+
+# resource "aws_s3_object" "error_html" {
+#   bucket = aws_s3_bucket.website_bucket.bucket
+#   key    = "error.html"
+#   source = var.error_html_filepath
+#   etag = filemd5(var.error_html_filepath)
+#   content_type = "text/html"
+#   lifecycle {
+#     replace_triggered_by = [terraform_data.content_version.output]
+#     ignore_changes = [etag]
+#   }
+# }
+
+resource "aws_s3_object" "upload_top_html" {
+  for_each = fileset(var.html_filepath,"*.{html}")
   bucket = aws_s3_bucket.website_bucket.bucket
-  key    = "index.html"
-  source = var.index_html_filepath
-  etag = filemd5(var.index_html_filepath)
+  key    = "${each.key}"
+  source = "${var.html_filepath}/${each.key}"
   content_type = "text/html"
+  etag = filemd5("${var.html_filepath}${each.key}")
   lifecycle {
-    ignore_changes = [etag]
     replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
   }
 }
 
-resource "aws_s3_object" "error_html" {
-  bucket = aws_s3_bucket.website_bucket.bucket
-  key    = "error.html"
-  source = var.error_html_filepath
-  etag = filemd5(var.error_html_filepath)
-  content_type = "text/html"
-  lifecycle {
-    replace_triggered_by = [terraform_data.content_version.output]
-    ignore_changes = [etag]
-  }
-}
-
-resource "aws_s3_object" "upload_assets" {
-  for_each = fileset(var.assets_path,"*.{jpg,png,gif}")
+resource "aws_s3_object" "upload_general_assets" {
+  for_each = fileset(var.assets_path,"*.{jpg,png,gif,jpeg,ico,svg}")
   bucket = aws_s3_bucket.website_bucket.bucket
   key    = "assets/${each.key}"
   source = "${var.assets_path}/${each.key}"
+  content_type = "image/jpeg"
   etag = filemd5("${var.assets_path}${each.key}")
   lifecycle {
     replace_triggered_by = [terraform_data.content_version.output]
     ignore_changes = [etag]
   }
 }
+
+resource "aws_s3_object" "upload_recipe_assets" {
+  for_each = fileset(var.recipes_path,"*.{jpg,jpeg}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "assets/recipes/${each.key}"
+  source = "${var.recipes_path}/${each.key}"
+  content_type = "image/jpeg"
+  etag = filemd5("${var.recipes_path}${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_css" {
+  for_each = fileset(var.css_path,"*.css")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "css/${each.key}"
+  source = "${var.css_path}/${each.key}"
+  etag = filemd5("${var.css_path}${each.key}")
+  content_type = "text/css"
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+
+
 
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy

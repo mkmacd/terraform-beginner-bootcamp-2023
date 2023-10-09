@@ -54,3 +54,21 @@ variable "assets_path" {
   type        = string
 }
 
+variable "public_path" {
+  description = "Path to assets folder"
+  type        = string
+}
+variable "css_path" {
+  description = "Path to assets folder"
+  type        = string
+}
+
+variable "html_filepath" {
+  description = "Path to home htmls files"
+  type        = string
+}
+
+variable "recipes_path" {
+  description = "Path to recipes folder within assets"
+  type        = string
+}

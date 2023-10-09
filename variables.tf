@@ -24,6 +24,18 @@ variable "content_version" {
 variable "assets_path" {
   type        = string
 }
+variable "public_path" {
+  type        = string
+}
+variable "css_path" {
+  type        = string
+}
 variable "terratowns_endpoint" {
+  type        = string
+}
+variable "html_filepath" {
+  type        = string
+}
+variable "recipes_path" {
   type        = string
 }
