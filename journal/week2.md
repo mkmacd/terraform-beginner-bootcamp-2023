@@ -148,3 +148,63 @@ module "terrahouse_aws" {
   html_filepath = var.html_filepath
   recipes_path = var.recipes_path
 }```
+
+
+### Updates with Two Homes
+
+This code above was updated when we changed the variables when creating two homes. The changes were using the new `var.public_path`
+The new code is as follows:
+
+```
+resource "aws_s3_object" "upload_top_html" {
+  for_each = fileset(var.public_path,"*.{html}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "${each.key}"
+  source = "${var.public_path}/${each.key}"
+  content_type = "text/html"
+  etag = filemd5("${var.public_path}/${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_general_assets" {
+  for_each = fileset("${var.public_path}/assets","*.{jpg,png,gif,jpeg,ico,svg}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "assets/${each.key}"
+  source = "${var.public_path}/assets/${each.key}"
+  content_type = "image/jpeg"
+  etag = filemd5("${var.public_path}/assets/${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_recipe_assets" {
+  for_each = fileset("${var.public_path}/assets/recipes","*.{jpg,jpeg}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "assets/recipes/${each.key}"
+  source = "${var.public_path}/assets/recipes/${each.key}"
+  content_type = "image/jpeg"
+  etag = filemd5("${var.public_path}/assets/recipes/${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_css" {
+  for_each = fileset("${var.public_path}/css","*.css")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "css/${each.key}"
+  source = "${var.public_path}/css/${each.key}"
+  etag = filemd5("${var.public_path}/css/${each.key}")
+  content_type = "text/css"
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+```

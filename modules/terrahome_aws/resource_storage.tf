@@ -46,12 +46,12 @@ resource "aws_s3_bucket_website_configuration" "website_configuration" {
 # }
 
 resource "aws_s3_object" "upload_top_html" {
-  for_each = fileset(var.html_filepath,"*.{html}")
+  for_each = fileset(var.public_path,"*.{html}")
   bucket = aws_s3_bucket.website_bucket.bucket
   key    = "${each.key}"
-  source = "${var.html_filepath}/${each.key}"
+  source = "${var.public_path}/${each.key}"
   content_type = "text/html"
-  etag = filemd5("${var.html_filepath}${each.key}")
+  etag = filemd5("${var.public_path}/${each.key}")
   lifecycle {
     replace_triggered_by = [terraform_data.content_version.output]
     ignore_changes = [etag]
@@ -59,12 +59,12 @@ resource "aws_s3_object" "upload_top_html" {
 }
 
 resource "aws_s3_object" "upload_general_assets" {
-  for_each = fileset(var.assets_path,"*.{jpg,png,gif,jpeg,ico,svg}")
+  for_each = fileset("${var.public_path}/assets","*.{jpg,png,gif,jpeg,ico,svg}")
   bucket = aws_s3_bucket.website_bucket.bucket
   key    = "assets/${each.key}"
-  source = "${var.assets_path}/${each.key}"
+  source = "${var.public_path}/assets/${each.key}"
   content_type = "image/jpeg"
-  etag = filemd5("${var.assets_path}${each.key}")
+  etag = filemd5("${var.public_path}/assets/${each.key}")
   lifecycle {
     replace_triggered_by = [terraform_data.content_version.output]
     ignore_changes = [etag]
@@ -72,12 +72,12 @@ resource "aws_s3_object" "upload_general_assets" {
 }
 
 resource "aws_s3_object" "upload_recipe_assets" {
-  for_each = fileset(var.recipes_path,"*.{jpg,jpeg}")
+  for_each = fileset("${var.public_path}/assets/recipes","*.{jpg,jpeg}")
   bucket = aws_s3_bucket.website_bucket.bucket
   key    = "assets/recipes/${each.key}"
-  source = "${var.recipes_path}/${each.key}"
+  source = "${var.public_path}/assets/recipes/${each.key}"
   content_type = "image/jpeg"
-  etag = filemd5("${var.recipes_path}${each.key}")
+  etag = filemd5("${var.public_path}/assets/recipes/${each.key}")
   lifecycle {
     replace_triggered_by = [terraform_data.content_version.output]
     ignore_changes = [etag]
@@ -85,11 +85,11 @@ resource "aws_s3_object" "upload_recipe_assets" {
 }
 
 resource "aws_s3_object" "upload_css" {
-  for_each = fileset(var.css_path,"*.css")
+  for_each = fileset("${var.public_path}/css","*.css")
   bucket = aws_s3_bucket.website_bucket.bucket
   key    = "css/${each.key}"
-  source = "${var.css_path}/${each.key}"
-  etag = filemd5("${var.css_path}${each.key}")
+  source = "${var.public_path}/css/${each.key}"
+  etag = filemd5("${var.public_path}/css/${each.key}")
   content_type = "text/css"
   lifecycle {
     replace_triggered_by = [terraform_data.content_version.output]
