@@ -33,3 +33,9 @@ variable "css_path" {
 variable "terratowns_endpoint" {
   type        = string
 }
+variable "html_filepath" {
+  type        = string
+}
+variable "recipes_path" {
+  type        = string
+}

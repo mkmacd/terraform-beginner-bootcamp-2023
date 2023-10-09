@@ -63,3 +63,12 @@ variable "css_path" {
   type        = string
 }
 
+variable "html_filepath" {
+  description = "Path to home htmls files"
+  type        = string
+}
+
+variable "recipes_path" {
+  description = "Path to recipes folder within assets"
+  type        = string
+}

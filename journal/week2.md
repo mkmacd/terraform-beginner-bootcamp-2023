@@ -53,3 +53,98 @@ bundle exec ruby server/rb
 ```
 All of the code for our server is stored in the `server.rb` file.
 
+
+## Final issues
+
+I was having difficult with ensuring the css worked appropriately as well as the images showing up. 
+
+To fix this I seperated out the uploads into the main html, css, and two image uploads depeding on the folders they resided in. This enabled me to ensure `content_type ="appropriate/type`
+
+The final blocks were as follows:
+
+```tf
+resource "aws_s3_object" "upload_top_html" {
+  for_each = fileset(var.html_filepath,"*.{html}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "${each.key}"
+  source = "${var.html_filepath}/${each.key}"
+  content_type = "text/html"
+  etag = filemd5("${var.html_filepath}${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_general_assets" {
+  for_each = fileset(var.assets_path,"*.{jpg,png,gif,jpeg,ico,svg}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "assets/${each.key}"
+  source = "${var.assets_path}/${each.key}"
+  content_type = "image/jpeg"
+  etag = filemd5("${var.assets_path}${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_recipe_assets" {
+  for_each = fileset(var.recipes_path,"*.{jpg,jpeg}")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "assets/recipes/${each.key}"
+  source = "${var.recipes_path}/${each.key}"
+  content_type = "image/jpeg"
+  etag = filemd5("${var.recipes_path}${each.key}")
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+
+resource "aws_s3_object" "upload_css" {
+  for_each = fileset(var.css_path,"*.css")
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "css/${each.key}"
+  source = "${var.css_path}/${each.key}"
+  etag = filemd5("${var.css_path}${each.key}")
+  content_type = "text/css"
+  lifecycle {
+    replace_triggered_by = [terraform_data.content_version.output]
+    ignore_changes = [etag]
+  }
+}
+```
+
+This also required extra path variables to be set including:
+
+```
+html_filepath="/workspace/terraform-beginner-bootcamp-2023/public/"
+assets_path="/workspace/terraform-beginner-bootcamp-2023/public/assets/"
+recipes_path="/workspace/terraform-beginner-bootcamp-2023/public/assets/recipes/"
+public_path="/workspace/terraform-beginner-bootcamp-2023/public/"
+css_path="/workspace/terraform-beginner-bootcamp-2023/public/css/"
+```
+
+When path variables are set they also need to be added to `variables.tf` within the module and at the top level like this:
+```
+variable "recipes_path" {
+  description = "Path to recipes folder within assets"
+  type        = string
+}
+```
+
+As well as within the module block in  `main.tf`
+```
+module "terrahouse_aws" {
+  source = "./modules/terrahouse_aws"
+  user_uuid = var.teacherseat_user_uuid
+  error_html_filepath = var.error_html_filepath
+  index_html_filepath = var.index_html_filepath
+  content_version = var.content_version
+  assets_path = var.assets_path
+  public_path = var.public_path
+  css_path = var.css_path
+  html_filepath = var.html_filepath
+  recipes_path = var.recipes_path
+}```
